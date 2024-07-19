@@ -5,9 +5,7 @@
         [Fact]
         public async Task Publish_AllProjects()
         {
-            var publisher = new Publisher(
-                DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
-                DirectoryPathConstatns.BUILDS);
+            var publisher = CreatePublisher();
 
             await publisher.PublishAsync(CancellationToken.None);
 
@@ -39,10 +37,22 @@
         }
 
         [Fact]
-        public async Task Publish_WPF_Project()
+        public async Task Create_Build_Folder()
         {
+            var publisher = CreatePublisher();
 
+            await publisher.PublishAsync(CancellationToken.None);
+
+            var isFolderCreated = Directory
+                .Exists(publisher.BuildDirectory);
+
+            Assert.True( isFolderCreated);
         }
 
+        private static Publisher CreatePublisher() =>
+            new (
+                DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
+                DirectoryPathConstatns.BUILDS,
+                new Random().Next());
     }
 }
