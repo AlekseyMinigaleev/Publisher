@@ -18,11 +18,15 @@
                 .Where(x => Directory.GetFiles(x, "*.csproj").Any());
 
             var winPublishDirsCount = Directory
-                .GetDirectories(publisher.OutputDirectory, $"*_{Publisher.WindowsPlatforn}")
+                .GetDirectories(
+                    publisher.OutputDirectory,
+                    $"*_{PlatformConstants.WINDOWS_X64}")
                 .Length;
 
             var linuxPublisDirsCount = Directory
-                .GetDirectories(publisher.OutputDirectory, $"*_{Publisher.LinuxPlatforn}")
+                .GetDirectories(
+                    publisher.OutputDirectory,
+                    $"*_{PlatformConstants.LINUX_X64}")
                 .Length;
 
             var winExistProjectDirsCount = existProjectDirs.Count();

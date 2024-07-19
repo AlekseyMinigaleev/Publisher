@@ -7,9 +7,6 @@ namespace Publisher
     {
         public readonly string SolutionFilePath;
         public readonly string OutputDirectory;
-        public const string WindowsPlatforn = "win-x64";
-        public const string LinuxPlatforn = "linux-x64";
-
 
         public Publisher(
             string solutionDirectory,
@@ -27,8 +24,8 @@ namespace Publisher
 
             foreach (var projectFile in projFiles)
             {
-                BuildProject(projectFile, WindowsPlatforn);
-                BuildProject(projectFile, LinuxPlatforn);
+                BuildProject(projectFile, PlatformConstants.WINDOWS_X64);
+                BuildProject(projectFile, PlatformConstants.LINUX_X64);
             }
         }
 
@@ -106,6 +103,5 @@ namespace Publisher
             if (process.ExitCode != 0)
                 Console.WriteLine($"Error building project {projectName} for {runtime}");
         }
-
     }
 }
