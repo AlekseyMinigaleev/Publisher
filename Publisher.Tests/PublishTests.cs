@@ -45,7 +45,7 @@
 
                     var wpfline = File.ReadAllLines(csprojFile)
                         .Select(x => x.Trim().Trim('"'))
-                        .Where(x => x.Contains("<UseWPF>"))
+                        .Where(x => x.StartsWith(CsprojLinesConstants.UseWPF_TAG))
                         .Any();
 
                     return wpfline;

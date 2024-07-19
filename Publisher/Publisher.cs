@@ -55,7 +55,7 @@ namespace Publisher
             CancellationToken cancellationToken) =>
             (await File
                 .ReadAllLinesAsync(solutionDirectory, cancellationToken))
-                .Where(x => x.StartsWith("Project("))
+                .Where(x => x.StartsWith(CsprojLinesConstants.PROJECT))
                 .Select(x =>
                 {
                     var path = x
@@ -77,7 +77,7 @@ namespace Publisher
                 OutputDirectory,
                 $"{projectName}_{runtime}");
 
-            var arguments = 
+            var arguments =
                 $"publish \"{projectFile}\" -c {configuration} -r {runtime} -o \"{outputPath}\"";
 
             var processInfo = new ProcessStartInfo("dotnet", arguments)
@@ -89,7 +89,7 @@ namespace Publisher
                 WorkingDirectory = Path.GetDirectoryName(SolutionFilePath)
             };
 
-            using var process = 
+            using var process =
                 Process.Start(processInfo)
                 ?? throw new Exception();
 
