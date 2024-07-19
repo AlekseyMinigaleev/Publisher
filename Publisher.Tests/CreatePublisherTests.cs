@@ -9,14 +9,16 @@ namespace Publisher.Tests
             Assert.Throws<NoSolutionFileException>(
                 () => new Publisher(
                     $"{Directory.GetCurrentDirectory()}",
-                    DirectoryPathConstatns.BUILDS));
+                    DirectoryPathConstatns.BUILDS,
+                    1));
 
         [Fact]
         public void Rigth_SolutionDirectory()
         {
             var publisher = new Publisher(
                 DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
-                DirectoryPathConstatns.BUILDS);
+                DirectoryPathConstatns.BUILDS,
+                1);
 
             var slnExtension = Path
                 .GetExtension(publisher.SolutionFilePath);
@@ -29,7 +31,8 @@ namespace Publisher.Tests
             Assert.Throws<NotEmptyOutputDirectoryException>(
                 () => new Publisher(
                      DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
-                     DirectoryPathConstatns.ALL_PROJECT_SOLUTION));
+                     DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
+                     1));
 
         [Fact]
         public void Exist_Empty_OutputDirectory()
@@ -39,7 +42,8 @@ namespace Publisher.Tests
             var exception = Record.Exception(() =>
                 publisher = new Publisher(
                     DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
-                    DirectoryPathConstatns.EXIST_EMPTY_OUTPUT));
+                    DirectoryPathConstatns.EXIST_EMPTY_OUTPUT,
+                    1));
 
             Assert.Null(exception);
             Assert.NotNull(publisher);
@@ -53,7 +57,8 @@ namespace Publisher.Tests
             var exception = Record.Exception(() =>
                 publisher = new Publisher(
                     DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
-                    DirectoryPathConstatns.NOT_EXIST_OUTPUT));
+                    DirectoryPathConstatns.NOT_EXIST_OUTPUT,
+                    1));
 
             Assert.Null(exception);
             Assert.NotNull(publisher);
