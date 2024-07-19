@@ -19,13 +19,13 @@
 
             var winPublishDirsCount = Directory
                 .GetDirectories(
-                    publisher.OutputDirectory,
+                    publisher.BuildDirectory,
                     $"*_{PlatformConstants.WINDOWS_X64}")
                 .Length;
 
             var linuxPublisDirsCount = Directory
                 .GetDirectories(
-                    publisher.OutputDirectory,
+                    publisher.BuildDirectory,
                     $"*_{PlatformConstants.LINUX_X64}")
                 .Length;
 
