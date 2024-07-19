@@ -27,7 +27,7 @@ namespace Publisher.Tests
             var slnExtension = Path
                 .GetExtension(publisher.SolutionFilePath);
 
-            Assert.Equal(".sln", slnExtension);
+            Assert.Equal($"{FileExtensionConstants.SLN}", slnExtension);
         }
 
         [Fact]

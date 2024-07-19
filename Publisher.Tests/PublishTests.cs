@@ -15,7 +15,11 @@
 
             var existProjectDirs = Directory
                 .GetDirectories(localSolutionDirectory)
-                .Where(x => Directory.GetFiles(x, "*.csproj").Any());
+                .Where(x => Directory
+                    .GetFiles(
+                        x,
+                        $"*{FileExtensionConstants.CJPROJ}")
+                    .Any());
 
             var winPublishDirsCount = Directory
                 .GetDirectories(
@@ -36,7 +40,7 @@
                 .Where(dir =>
                 {
                     var csprojFile = Directory
-                        .GetFiles(dir, "*.csproj")
+                        .GetFiles(dir, $"*{FileExtensionConstants.CJPROJ}")
                         .Single();
 
                     var wpfline = File.ReadAllLines(csprojFile)

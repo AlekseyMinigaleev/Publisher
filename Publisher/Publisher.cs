@@ -31,7 +31,7 @@ namespace Publisher
 
         private static string GetSolutionFilePath(string solitionDirectory) =>
             Directory
-                .GetFiles(solitionDirectory, "*.sln")
+                .GetFiles(solitionDirectory, $"*{FileExtensionConstants.SLN}")
                 .SingleOrDefault()
                 ?? throw new NoSolutionFileException();
 
