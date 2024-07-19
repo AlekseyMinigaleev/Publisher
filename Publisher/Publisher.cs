@@ -16,18 +16,16 @@ namespace Publisher
             OutputDirectory = CheckOutputDirectory(outputDirectory);
         }
 
-        public async Task PublishAsync(CancellationToken cancellationToken)
-        {
-            var projFiles = await GetProjectFilesAsync(
+        public async Task PublishAsync(CancellationToken cancellationToken) =>
+            (await GetProjectFilesAsync(
                 SolutionFilePath,
-                cancellationToken);
-
-            foreach (var projectFile in projFiles)
+                cancellationToken))
+            .ToList()
+            .ForEach(project =>
             {
-                BuildProject(projectFile, PlatformConstants.WINDOWS_X64);
-                BuildProject(projectFile, PlatformConstants.LINUX_X64);
-            }
-        }
+                BuildProject(project, PlatformConstants.WINDOWS_X64);
+                BuildProject(project, PlatformConstants.LINUX_X64);
+            });
 
         private static string GetSolutionFilePath(string solitionDirectory) =>
             Directory
@@ -56,29 +54,35 @@ namespace Publisher
             (await File
                 .ReadAllLinesAsync(solutionDirectory, cancellationToken))
                 .Where(x => x.StartsWith(CsprojLinesConstants.PROJECT))
-                .Select(x =>
-                {
-                    var path = x
-                        .Split(",")
-                        .Where(part => part.Length > 1)
-                        .ToArray()
-                        [1].Trim()
-                        .Trim('"');
-
-                    return path;
-                })
+                .Select(GetProjectPath)
                 .ToArray();
+
+        private static string GetProjectPath(string projectLine) =>
+            projectLine
+                .Split(",")
+                .Where(part => part.Length > 1)
+                .ToArray()[1]
+                .Trim()
+                .Trim('"');
 
         private void BuildProject(string projectFile, string runtime)
         {
-            string configuration = "Release";
-            string projectName = Path.GetFileNameWithoutExtension(projectFile);
-            string outputPath = Path.Combine(
-                OutputDirectory,
-                $"{projectName}_{runtime}");
+            var processInfo = CreateProcessInfo(projectFile, runtime);
+            try
+            {
+                ExectuteProcess(processInfo);
+            }
+            catch (ProcessExitCodeException)
+            {
+                Console.WriteLine($"'{projectFile}' build was skipped for '{runtime}' platform");
+            }
+        }
 
-            var arguments =
-                $"publish \"{projectFile}\" -c {configuration} -r {runtime} -o \"{outputPath}\"";
+        private ProcessStartInfo CreateProcessInfo(string projectFile, string runtime)
+        {
+            var arguments = GetBuildProjectProcessArguments(
+               projectFile,
+               runtime);
 
             var processInfo = new ProcessStartInfo("dotnet", arguments)
             {
@@ -89,19 +93,49 @@ namespace Publisher
                 WorkingDirectory = Path.GetDirectoryName(SolutionFilePath)
             };
 
-            using var process =
-                Process.Start(processInfo)
-                ?? throw new Exception();
+            return processInfo;
+        }
 
-            process.OutputDataReceived += (sender, e) => Console.WriteLine(e.Data);
-            process.ErrorDataReceived += (sender, e) => Console.Error.WriteLine(e.Data);
+        private string GetBuildProjectProcessArguments(
+            string projectFile,
+            string runtime)
+        {
+            string configuration = "Release";
+            string projectName = Path.GetFileNameWithoutExtension(projectFile);
+            string outputPath = Path.Combine(
+                OutputDirectory,
+                $"{projectName}_{runtime}");
 
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
+            return $"publish \"{projectFile}\" -c {configuration} -r {runtime} -o \"{outputPath}\"";
+        }
 
-            process.WaitForExit();
-            if (process.ExitCode != 0)
-                Console.WriteLine($"Error building project {projectName} for {runtime}");
+        private static void ExectuteProcess(ProcessStartInfo processInfo)
+        {
+
+            string processName;
+            int processExitCode;
+
+            using (var process =
+               Process.Start(processInfo)
+               ?? throw new Exception())
+            {
+                process.OutputDataReceived += (sender, e) => Console.WriteLine(e.Data);
+                process.ErrorDataReceived += (sender, e) => Console.Error.WriteLine(e.Data);
+
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+
+                processName = process.ProcessName;
+
+                process.WaitForExit();
+
+                processExitCode = process.ExitCode;
+            }
+
+           
+
+            if (processExitCode != 0)
+                throw new ProcessExitCodeException(processName, processExitCode);
         }
     }
 }

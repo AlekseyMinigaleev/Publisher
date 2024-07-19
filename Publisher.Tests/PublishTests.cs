@@ -3,18 +3,16 @@
     public class PublishTests
     {
         [Fact]
-        public async Task Create_File_SystemAsync()
+        public async Task Publish_AllProjects()
         {
-            var localSolutionDirectory = Utils
-                .GetLocalSolutionDirectory();
             var publisher = new Publisher(
-                localSolutionDirectory,
-                $"{localSolutionDirectory}\\{DirectoryNameConstants.BUILDS}");
+                DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
+                DirectoryPathConstatns.BUILDS);
 
             await publisher.PublishAsync(CancellationToken.None);
 
             var existProjectDirs = Directory
-                .GetDirectories(localSolutionDirectory)
+                .GetDirectories(DirectoryPathConstatns.ALL_PROJECT_SOLUTION)
                 .Where(x => Directory
                     .GetFiles(
                         x,
@@ -36,27 +34,15 @@
             var winExistProjectDirsCount = existProjectDirs.Count();
             var linuxExistProjectDirsCount = existProjectDirs.Count();
 
-            var isWpfProjectDirExist = existProjectDirs
-                .Where(dir =>
-                {
-                    var csprojFile = Directory
-                        .GetFiles(dir, $"*{FileExtensionConstants.CJPROJ}")
-                        .Single();
-
-                    var wpfline = File.ReadAllLines(csprojFile)
-                        .Select(x => x.Trim().Trim('"'))
-                        .Where(x => x.StartsWith(CsprojLinesConstants.UseWPF_TAG))
-                        .Any();
-
-                    return wpfline;
-                })
-                .Any();
-
-            if (isWpfProjectDirExist)
-                linuxExistProjectDirsCount--;
-
             Assert.Equal(winExistProjectDirsCount, winPublishDirsCount);
             Assert.Equal(linuxExistProjectDirsCount, linuxPublisDirsCount);
         }
+
+        [Fact]
+        public async Task Publish_WPF_Project()
+        {
+
+        }
+
     }
 }

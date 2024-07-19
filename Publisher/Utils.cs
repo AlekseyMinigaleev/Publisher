@@ -1,8 +1,8 @@
-﻿namespace Publisher.Tests
+﻿namespace Publisher
 {
-    internal static class Utils
+    public class Utils
     {
-        public static string GetLocalSolutionDirectory()
+        public static string GetBaseDirectory()
         {
             string relativePath = @"..\..\..\..\..\";
 
@@ -11,9 +11,10 @@
                     Path.Combine(Directory.GetCurrentDirectory(),
                     relativePath));
 
-            return $"" +
-                $"{solutionDirectory}" +
-                $"\\{DirectoryNameConstants.SOLUTION_FOR_TEST_PUBLISHER}";
+            var result = $"" +
+                $"{solutionDirectory}";
+
+            return result;
         }
     }
 }

@@ -5,24 +5,18 @@ namespace Publisher.Tests
     public class CreatePublisherTests
     {
         [Fact]
-        public void Wrong_SolutionDirectory()
-        {
-            var localSolutionDirectory = Utils.GetLocalSolutionDirectory();
-
+        public void Wrong_SolutionDirectory() =>
             Assert.Throws<NoSolutionFileException>(
                 () => new Publisher(
                     $"{Directory.GetCurrentDirectory()}",
-                    ""));
-        }
+                    DirectoryPathConstatns.BUILDS));
 
         [Fact]
         public void Rigth_SolutionDirectory()
         {
-            var localSolutionDirectory = Utils.GetLocalSolutionDirectory();
-
             var publisher = new Publisher(
-                localSolutionDirectory,
-                $"{localSolutionDirectory}\\{DirectoryNameConstants.NEW_FOLDER}");
+                DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
+                DirectoryPathConstatns.BUILDS);
 
             var slnExtension = Path
                 .GetExtension(publisher.SolutionFilePath);
@@ -31,27 +25,21 @@ namespace Publisher.Tests
         }
 
         [Fact]
-        public void Exist_Not_Empty_OutputDirectory()
-        {
-            var localSolutionDirectory = Utils.GetLocalSolutionDirectory();
-
+        public void Exist_Not_Empty_OutputDirectory() =>
             Assert.Throws<NotEmptyOutputDirectoryException>(
                 () => new Publisher(
-                    localSolutionDirectory,
-                    localSolutionDirectory));
-        }
+                     DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
+                     DirectoryPathConstatns.ALL_PROJECT_SOLUTION));
 
         [Fact]
         public void Exist_Empty_OutputDirectory()
         {
-            var localSolutionDirectory = Utils.GetLocalSolutionDirectory();
-
             Publisher? publisher = null;
 
             var exception = Record.Exception(() =>
                 publisher = new Publisher(
-                    localSolutionDirectory,
-                    $"{localSolutionDirectory}\\{DirectoryNameConstants.EXIST_EMPTY_OUTPUT}"));
+                    DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
+                    DirectoryPathConstatns.EXIST_EMPTY_OUTPUT));
 
             Assert.Null(exception);
             Assert.NotNull(publisher);
@@ -60,18 +48,15 @@ namespace Publisher.Tests
         [Fact]
         public void Not_Exist_OutputDirectory()
         {
-            var localSolutionDirectory = Utils.GetLocalSolutionDirectory();
-
             Publisher? publisher = null;
 
             var exception = Record.Exception(() =>
                 publisher = new Publisher(
-                    localSolutionDirectory,
-                    $"{localSolutionDirectory}\\{DirectoryNameConstants.NEW_FOLDER}"));
+                    DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
+                    DirectoryPathConstatns.NOT_EXIST_OUTPUT));
 
             Assert.Null(exception);
             Assert.NotNull(publisher);
         }
-
     }
 }
