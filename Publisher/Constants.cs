@@ -30,22 +30,20 @@
     public static class CsprojLinesConstants
     {
         public const string PROJECT = "Project(";
-
-        public const string UseWPF_TAG = "<UseWPF>";
     }
 
     public static class DirectoryPathConstatns
     {
         public static readonly string BASE_PATH = Utils.GetBaseDirectory();
 
-        public static readonly string ALL_PROJECT_SOLUTION = $"{BASE_PATH}\\{DirectoryNameConstants.ALL_PROJECT_SOLUTION}";
+        public static readonly string ALL_PROJECT_SOLUTION = $"{BASE_PATH}{DirectoryNameConstants.ALL_PROJECT_SOLUTION}";
 
-        public static readonly string WPF_PROJECT_SOLUTION = $"{BASE_PATH}\\{DirectoryNameConstants.WPF_SOLUTION}";
+        public static readonly string WPF_PROJECT_SOLUTION = $"{BASE_PATH}{DirectoryNameConstants.WPF_SOLUTION}";
 
-        public static readonly string BUILDS = $"{BASE_PATH}\\{DirectoryNameConstants.BUILDS}";
+        public static readonly string BUILDS = $"{BASE_PATH}{DirectoryNameConstants.BUILDS}";
 
-        public static readonly string NOT_EXIST_OUTPUT = $"{BASE_PATH}\\{DirectoryNameConstants.NEW_FOLDER}";
+        public static readonly string NOT_EXIST_OUTPUT = $"{BASE_PATH}{DirectoryNameConstants.NEW_FOLDER}";
 
-        public static readonly string EXIST_EMPTY_OUTPUT = $"{BASE_PATH}\\{DirectoryNameConstants.EXIST_EMPTY_OUTPUT}";
+        public static readonly string EXIST_EMPTY_OUTPUT = $"{BASE_PATH}{DirectoryNameConstants.EXIST_EMPTY_OUTPUT}";
     }
 }
