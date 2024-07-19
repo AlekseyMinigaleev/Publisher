@@ -7,13 +7,19 @@ namespace Publisher
     {
         public readonly string SolutionFilePath;
         public readonly string OutputDirectory;
+        public readonly int TaskNumber;
+        public readonly string BuildDirectory;
 
         public Publisher(
             string solutionDirectory,
-            string outputDirectory)
+            string outputDirectory,
+            int taskNumber)
         {
             SolutionFilePath = GetSolutionFilePath(solutionDirectory);
             OutputDirectory = CheckOutputDirectory(outputDirectory);
+            TaskNumber = taskNumber;
+            BuildDirectory = Path
+                .Combine(OutputDirectory, $"buid_{TaskNumber}");
         }
 
         public async Task PublishAsync(CancellationToken cancellationToken) =>
@@ -103,7 +109,7 @@ namespace Publisher
             string configuration = "Release";
             string projectName = Path.GetFileNameWithoutExtension(projectFile);
             string outputPath = Path.Combine(
-                OutputDirectory,
+                BuildDirectory,
                 $"{projectName}_{runtime}");
 
             return $"publish \"{projectFile}\" -c {configuration} -r {runtime} -o \"{outputPath}\"";
@@ -111,7 +117,6 @@ namespace Publisher
 
         private static void ExectuteProcess(ProcessStartInfo processInfo)
         {
-
             string processName;
             int processExitCode;
 
@@ -131,8 +136,6 @@ namespace Publisher
 
                 processExitCode = process.ExitCode;
             }
-
-           
 
             if (processExitCode != 0)
                 throw new ProcessExitCodeException(processName, processExitCode);
