@@ -9,7 +9,7 @@
                 .GetLocalSolutionDirectory();
             var publisher = new Publisher(
                 localSolutionDirectory,
-                $"{localSolutionDirectory}\\Builds");
+                $"{localSolutionDirectory}\\{DirectoryNameConstants.BUILDS}");
 
             await publisher.PublishAsync(CancellationToken.None);
 

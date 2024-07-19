@@ -22,7 +22,7 @@ namespace Publisher.Tests
 
             var publisher = new Publisher(
                 localSolutionDirectory,
-                $"{localSolutionDirectory}/new folder");
+                $"{localSolutionDirectory}\\{DirectoryNameConstants.NEW_FOLDER}");
 
             var slnExtension = Path
                 .GetExtension(publisher.SolutionFilePath);
@@ -51,7 +51,7 @@ namespace Publisher.Tests
             var exception = Record.Exception(() =>
                 publisher = new Publisher(
                     localSolutionDirectory,
-                    $"{localSolutionDirectory}\\Output"));
+                    $"{localSolutionDirectory}\\{DirectoryNameConstants.EXIST_EMPTY_OUTPUT}"));
 
             Assert.Null(exception);
             Assert.NotNull(publisher);
@@ -67,7 +67,7 @@ namespace Publisher.Tests
             var exception = Record.Exception(() =>
                 publisher = new Publisher(
                     localSolutionDirectory,
-                    $"{localSolutionDirectory}/new folder"));
+                    $"{localSolutionDirectory}\\{DirectoryNameConstants.NEW_FOLDER}"));
 
             Assert.Null(exception);
             Assert.NotNull(publisher);

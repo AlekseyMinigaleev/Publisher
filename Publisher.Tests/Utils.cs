@@ -11,7 +11,9 @@
                     Path.Combine(Directory.GetCurrentDirectory(),
                     relativePath));
 
-            return $"{solutionDirectory}\\SolutionForTestPublisher";
+            return $"" +
+                $"{solutionDirectory}" +
+                $"\\{DirectoryNameConstants.SOLUTION_FOR_TEST_PUBLISHER}";
         }
     }
 }
