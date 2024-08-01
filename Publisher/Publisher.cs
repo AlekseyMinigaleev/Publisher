@@ -41,17 +41,13 @@ namespace Publisher
 
         private static string CheckOutputDirectory(string outputDirectory)
         {
-            if (!Directory.Exists(outputDirectory))
+            if (Directory.Exists(outputDirectory))
                 return outputDirectory;
 
-            var isEmptyDirectory = !Directory
-                .GetFiles(outputDirectory)
-                .Any();
+            Directory.CreateDirectory(outputDirectory);
+            Directory.Delete(Path.GetPathRoot(outputDirectory), true);
 
-            if (isEmptyDirectory)
-                return outputDirectory;
-
-            throw new NotEmptyOutputDirectoryException();
+            return outputDirectory;
         }
 
         private static async Task<string[]> GetProjectFilesAsync(

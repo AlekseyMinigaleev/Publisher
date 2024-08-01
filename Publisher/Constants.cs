@@ -18,8 +18,6 @@
     {
         public const string NEW_FOLDER = "new folder";
 
-        public const string EXIST_EMPTY_OUTPUT = "Empty";
-
         public const string BUILDS = "Builds";
 
         public const string ALL_PROJECT_SOLUTION = "AllProjectSolution";
@@ -42,8 +40,6 @@
 
         public static readonly string BUILDS = $"{BASE_PATH}{DirectoryNameConstants.BUILDS}";
 
-        public static readonly string NOT_EXIST_OUTPUT = $"{BASE_PATH}{DirectoryNameConstants.NEW_FOLDER}";
-
-        public static readonly string EXIST_EMPTY_OUTPUT = $"{BASE_PATH}{DirectoryNameConstants.EXIST_EMPTY_OUTPUT}";
+        public static readonly string OUTPUT = $"{BASE_PATH}{DirectoryNameConstants.BUILDS}";
     }
 }

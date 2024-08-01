@@ -27,22 +27,14 @@ namespace Publisher.Tests
         }
 
         [Fact]
-        public void Exist_Not_Empty_OutputDirectory() =>
-            Assert.Throws<NotEmptyOutputDirectoryException>(
-                () => new Publisher(
-                     DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
-                     DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
-                     1));
-
-        [Fact]
-        public void Exist_Empty_OutputDirectory()
+        public void Exist_OutputDirectory()
         {
             Publisher? publisher = null;
 
             var exception = Record.Exception(() =>
                 publisher = new Publisher(
                     DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
-                    DirectoryPathConstatns.EXIST_EMPTY_OUTPUT,
+                    DirectoryPathConstatns.OUTPUT,
                     1));
 
             Assert.Null(exception);
@@ -57,7 +49,7 @@ namespace Publisher.Tests
             var exception = Record.Exception(() =>
                 publisher = new Publisher(
                     DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
-                    DirectoryPathConstatns.NOT_EXIST_OUTPUT,
+                    $"{DirectoryPathConstatns.BASE_PATH}foo\\bar\\bazz",
                     1));
 
             Assert.Null(exception);
