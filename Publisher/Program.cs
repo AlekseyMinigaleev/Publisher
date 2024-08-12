@@ -1,6 +1,6 @@
 ﻿var publisher = new Publisher.Publisher(
-    "C:\\main\\projects\\KSEAgent",
+    "C:\\main\\projects\\learning\\AgentWith",
     "C:\\main\\builds",
-    1780);
+    "AgentInst3");
 
 await publisher.PublishAsync(CancellationToken.None);

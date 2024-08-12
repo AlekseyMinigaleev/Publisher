@@ -7,13 +7,13 @@ namespace Publisher
     {
         public readonly string SolutionFilePath;
         public readonly string OutputDirectory;
-        public readonly int TaskNumber;
+        public readonly string TaskNumber;
         public readonly string BuildDirectory;
 
         public Publisher(
             string solutionDirectory,
             string outputDirectory,
-            int taskNumber)
+            string taskNumber)
         {
             SolutionFilePath = GetSolutionFilePath(solutionDirectory);
             OutputDirectory = CheckOutputDirectory(outputDirectory);
