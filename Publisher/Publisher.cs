@@ -19,7 +19,7 @@ namespace Publisher
             OutputDirectory = CheckOutputDirectory(outputDirectory);
             TaskNumber = taskNumber;
             BuildDirectory = Path
-                .Combine(OutputDirectory, $"buid_{TaskNumber}");
+                .Combine(OutputDirectory, $"build_{TaskNumber}");
         }
 
         public async Task PublishAsync(CancellationToken cancellationToken) =>
