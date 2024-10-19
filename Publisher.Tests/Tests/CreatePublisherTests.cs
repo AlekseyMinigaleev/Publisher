@@ -33,8 +33,8 @@ namespace Publisher.Tests.Tests
 
             var exception = Record.Exception(() =>
                 publisher = new Publisher(
-                    DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
-                    DirectoryPathConstatns.OUTPUT,
+                    Utils.GetCurrentProjectDirectoryPath(),
+                    Utils.GetTestBuildsDirectoryPath(),
                     "1"));
 
             Assert.Null(exception);
