@@ -1,6 +1,6 @@
 using Publisher.Exceptions;
 
-namespace Publisher.Tests
+namespace Publisher.Tests.Tests
 {
     public class CreatePublisherTests
     {

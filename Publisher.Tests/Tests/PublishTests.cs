@@ -1,4 +1,4 @@
-﻿namespace Publisher.Tests
+﻿namespace Publisher.Tests.Tests
 {
     public class PublishTests
     {
@@ -46,11 +46,11 @@
             var isFolderCreated = Directory
                 .Exists(publisher.BuildDirectory);
 
-            Assert.True( isFolderCreated);
+            Assert.True(isFolderCreated);
         }
 
         private static Publisher CreatePublisher() =>
-            new (
+            new(
                 DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
                 DirectoryPathConstatns.BUILDS,
                 new Random().Next().ToString());
