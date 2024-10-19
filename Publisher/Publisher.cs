@@ -18,20 +18,25 @@ namespace Publisher
             SolutionFilePath = GetSolutionFilePath(solutionDirectory);
             OutputDirectory = CheckOutputDirectory(outputDirectory);
             TaskNumber = taskNumber;
-            BuildDirectory = Path
-                .Combine(OutputDirectory, $"build_{TaskNumber}");
+            BuildDirectory = Path.Combine(
+                OutputDirectory,
+                $"build_{TaskNumber}");
         }
 
-        public async Task PublishAsync(CancellationToken cancellationToken) =>
-            (await GetProjectFilesAsync(
-                SolutionFilePath,
-                cancellationToken))
-            .ToList()
-            .ForEach(project =>
-            {
-                BuildProject(project, PlatformConstants.WINDOWS_X64);
-                BuildProject(project, PlatformConstants.LINUX_X64);
-            });
+        public async Task PublishAsync(CancellationToken cancellationToken)
+        {
+            var projectFiles = await GetProjectFilesAsync(
+                 SolutionFilePath,
+                 cancellationToken);
+
+            projectFiles
+                .ToList()
+                .ForEach(project =>
+                {
+                    BuildProject(project, PlatformConstants.WINDOWS_X64);
+                    BuildProject(project, PlatformConstants.LINUX_X64);
+                });
+        }
 
         private static string GetSolutionFilePath(string solitionDirectory) =>
             Directory
@@ -52,12 +57,19 @@ namespace Publisher
 
         private static async Task<string[]> GetProjectFilesAsync(
             string solutionDirectory,
-            CancellationToken cancellationToken) =>
-            (await File
-                .ReadAllLinesAsync(solutionDirectory, cancellationToken))
+            CancellationToken cancellationToken)
+        {
+            var lines = await File.ReadAllLinesAsync(
+                 solutionDirectory,
+                 cancellationToken);
+
+           var projectFiles = lines
                 .Where(x => x.StartsWith(CsprojLinesConstants.PROJECT))
                 .Select(GetProjectPath)
                 .ToArray();
+
+            return projectFiles;
+        }
 
         private static string GetProjectPath(string projectLine) =>
             projectLine
@@ -70,6 +82,7 @@ namespace Publisher
         private void BuildProject(string projectFile, string runtime)
         {
             var processInfo = CreateProcessInfo(projectFile, runtime);
+
             try
             {
                 ExectuteProcess(processInfo);
@@ -116,9 +129,7 @@ namespace Publisher
             string processName;
             int processExitCode;
 
-            using (var process =
-               Process.Start(processInfo)
-               ?? throw new Exception())
+            using (var process = Process.Start(processInfo) ?? throw new Exception())
             {
                 process.OutputDataReceived += (sender, e) => Console.WriteLine(e.Data);
                 process.ErrorDataReceived += (sender, e) => Console.Error.WriteLine(e.Data);
