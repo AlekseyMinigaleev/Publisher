@@ -2,15 +2,15 @@
 {
     internal static class DirectoryPathsForPublisherCreationTests
     {
-        private static string? _testBuildsDirectoryPath;
+        private static string? _outputDirectoryForTestBuilds;
 
-        public static string TestBuildsDirectoryPath
+        public static string OutputDirectoryForTestBuilds
         {
             get
             {
-                _testBuildsDirectoryPath ??= Utils.GetTestBuildsDirectoryPath();
+                _outputDirectoryForTestBuilds ??= Utils.GetOutputDirectoryForTestBuildsPath();
 
-                return _testBuildsDirectoryPath;
+                return _outputDirectoryForTestBuilds;
             }
         }
 

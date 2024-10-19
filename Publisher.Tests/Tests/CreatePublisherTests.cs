@@ -27,15 +27,15 @@ namespace Publisher.Tests.Tests
         [Fact]
         public void Exist_OutputDirectory()
         {
-            if (!Directory.Exists(DirectoryPathsForPublisherCreationTests.TestBuildsDirectoryPath))
-                Directory.CreateDirectory(DirectoryPathsForPublisherCreationTests.TestBuildsDirectoryPath);
+            if (!Directory.Exists(DirectoryPathsForPublisherCreationTests.OutputDirectoryForTestBuilds))
+                Directory.CreateDirectory(DirectoryPathsForPublisherCreationTests.OutputDirectoryForTestBuilds);
 
             Publisher? publisher = null;
 
             var exception = Record.Exception(() =>
                 publisher = new Publisher(
                     DirectoryPathsForPublisherCreationTests.CurrentProjectDirectoryPath,
-                    DirectoryPathsForPublisherCreationTests.TestBuildsDirectoryPath,
+                    DirectoryPathsForPublisherCreationTests.OutputDirectoryForTestBuilds,
                     "1"));
 
             Assert.Null(exception);
