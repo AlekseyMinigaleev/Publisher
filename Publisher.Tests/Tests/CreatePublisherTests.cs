@@ -1,5 +1,3 @@
-using Publisher.Exceptions;
-
 namespace Publisher.Tests.Tests
 {
     public class CreatePublisherTests
@@ -29,17 +27,15 @@ namespace Publisher.Tests.Tests
         [Fact]
         public void Exist_OutputDirectory()
         {
-            var testBuildsDirectoryPath = Utils.GetTestBuildsDirectoryPath();
-
-            if (!Directory.Exists(testBuildsDirectoryPath))
-                Directory.CreateDirectory(testBuildsDirectoryPath);
+            if (!Directory.Exists(DirectoryPathsForPublisherCreationTests.TestBuildsDirectoryPath))
+                Directory.CreateDirectory(DirectoryPathsForPublisherCreationTests.TestBuildsDirectoryPath);
 
             Publisher? publisher = null;
 
             var exception = Record.Exception(() =>
                 publisher = new Publisher(
-                    Utils.GetCurrentProjectDirectoryPath(),
-                    testBuildsDirectoryPath,
+                    DirectoryPathsForPublisherCreationTests.CurrentProjectDirectoryPath,
+                    DirectoryPathsForPublisherCreationTests.TestBuildsDirectoryPath,
                     "1"));
 
             Assert.Null(exception);
