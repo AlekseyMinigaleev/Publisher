@@ -10,7 +10,7 @@ namespace Publisher.Tests
                 () => new Publisher(
                     $"{Directory.GetCurrentDirectory()}",
                     DirectoryPathConstatns.BUILDS,
-                    1));
+                    "1"));
 
         [Fact]
         public void Rigth_SolutionDirectory()
@@ -18,7 +18,7 @@ namespace Publisher.Tests
             var publisher = new Publisher(
                 DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
                 DirectoryPathConstatns.BUILDS,
-                1);
+                "1");
 
             var slnExtension = Path
                 .GetExtension(publisher.SolutionFilePath);
@@ -35,7 +35,7 @@ namespace Publisher.Tests
                 publisher = new Publisher(
                     DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
                     DirectoryPathConstatns.OUTPUT,
-                    1));
+                    "1"));
 
             Assert.Null(exception);
             Assert.NotNull(publisher);
@@ -50,7 +50,7 @@ namespace Publisher.Tests
                 publisher = new Publisher(
                     DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
                     $"{DirectoryPathConstatns.BASE_PATH}foo\\bar\\bazz",
-                    1));
+                    "1"));
 
             Assert.Null(exception);
             Assert.NotNull(publisher);

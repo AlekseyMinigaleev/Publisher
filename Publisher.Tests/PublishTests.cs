@@ -53,6 +53,6 @@
             new (
                 DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
                 DirectoryPathConstatns.BUILDS,
-                new Random().Next());
+                new Random().Next().ToString());
     }
 }
