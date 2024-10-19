@@ -28,7 +28,7 @@ namespace Publisher
             var pathsToProjectFileRelativeToSlnFile = await GetPathsToProjectFileRelativeToSlnFileAsync(
                  SolutionFilePath,
                  cancellationToken);
-
+             
             pathsToProjectFileRelativeToSlnFile
                 .ToList()
                 .ForEach(pathToProjectFileRelativeToSlnFile =>
@@ -50,7 +50,6 @@ namespace Publisher
                 return outputDirectory;
 
             Directory.CreateDirectory(outputDirectory);
-            Directory.Delete(Path.GetPathRoot(outputDirectory), true);
 
             return outputDirectory;
         }
