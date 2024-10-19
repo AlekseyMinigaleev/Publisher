@@ -7,20 +7,20 @@ namespace Publisher
     {
         public readonly string SolutionFilePath;
         public readonly string OutputDirectory;
-        public readonly string TaskNumber;
+        public readonly string FullBuildName;
         public readonly string BuildDirectory;
 
         public Publisher(
             string solutionDirectory,
             string outputDirectory,
-            string taskNumber)
+            string buildName)
         {
             SolutionFilePath = GetSolutionFilePath(solutionDirectory);
             OutputDirectory = CheckOutputDirectory(outputDirectory);
-            TaskNumber = taskNumber;
+            FullBuildName = buildName;
             BuildDirectory = Path.Combine(
                 OutputDirectory,
-                $"build_{TaskNumber}");
+                $"build_{FullBuildName}");
         }
 
         public async Task PublishAsync(CancellationToken cancellationToken)
