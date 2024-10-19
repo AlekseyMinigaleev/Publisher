@@ -25,16 +25,16 @@ namespace Publisher
 
         public async Task PublishAsync(CancellationToken cancellationToken)
         {
-            var projectFiles = await GetProjectFilesAsync(
+            var pathsToProjectFileRelativeToSlnFile = await GetPathsToProjectFileRelativeToSlnFileAsync(
                  SolutionFilePath,
                  cancellationToken);
 
-            projectFiles
+            pathsToProjectFileRelativeToSlnFile
                 .ToList()
-                .ForEach(project =>
+                .ForEach(pathToProjectFileRelativeToSlnFile =>
                 {
-                    BuildProject(project, PlatformConstants.WINDOWS_X64);
-                    BuildProject(project, PlatformConstants.LINUX_X64);
+                    BuildProject(pathToProjectFileRelativeToSlnFile, PlatformConstants.WINDOWS_X64);
+                    BuildProject(pathToProjectFileRelativeToSlnFile, PlatformConstants.LINUX_X64);
                 });
         }
 
@@ -55,20 +55,20 @@ namespace Publisher
             return outputDirectory;
         }
 
-        private static async Task<string[]> GetProjectFilesAsync(
+        private static async Task<string[]> GetPathsToProjectFileRelativeToSlnFileAsync(
             string solutionDirectory,
             CancellationToken cancellationToken)
         {
-            var lines = await File.ReadAllLinesAsync(
+            var solutionFileLines = await File.ReadAllLinesAsync(
                  solutionDirectory,
                  cancellationToken);
 
-           var projectFiles = lines
+           var pathsToProjectFileRelativeToSlnFile = solutionFileLines
                 .Where(x => x.StartsWith(CsprojLinesConstants.PROJECT))
                 .Select(GetProjectPath)
                 .ToArray();
 
-            return projectFiles;
+            return pathsToProjectFileRelativeToSlnFile;
         }
 
         private static string GetProjectPath(string projectLine) =>
