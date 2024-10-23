@@ -36,23 +36,17 @@
         //    Assert.Equal(linuxExistProjectDirsCount, linuxPublisDirsCount);
         //}
 
-        //[Fact]
-        //public async Task Create_Build_Folder()
-        //{
-        //    var publisher = CreatePublisher();
+        [Fact]
+        public async Task Create_Build_Folder()
+        {
+            var publisher = new Publisher(
+                DirectoryPathsForPublisherCreationTests.CurrentProjectDirectoryPath,
+                DirectoryPathsForPublisherCreationTests.OutputDirectoryForTestBuilds,
+                "test");
 
-        //    await publisher.PublishAsync(CancellationToken.None);
+            await publisher.PublishAsync(CancellationToken.None);
 
-        //    var isFolderCreated = Directory
-        //        .Exists(publisher.BuildDirectory);
-
-        //    Assert.True(isFolderCreated);
-        //}
-
-        //private static Publisher CreatePublisher() =>
-        //    new(
-        //        DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
-        //        DirectoryPathConstatns.BUILDS,
-        //        new Random().Next().ToString());
+            Assert.True(Directory.Exists(publisher.BuildDirectory));
+        }
     }
 }
