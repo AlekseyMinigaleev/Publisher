@@ -1,14 +1,18 @@
+using Publisher.Exceptions;
+
 namespace Publisher.Tests.Tests
 {
     public class CreatePublisherTests
     {
-        //[Fact]
-        //public void Wrong_SolutionDirectory() =>
-        //    Assert.Throws<NoSolutionFileException>(
-        //        () => new Publisher(
-        //            $"{Directory.GetCurrentDirectory()}",
-        //            DirectoryPathConstatns.BUILDS,
-        //            "1"));
+        [Fact]
+        public void Wrong_SolutionDirectory()
+        {
+            Assert.Throws<NoSolutionFileException>(
+                () => new Publisher(
+                    $"{Directory.GetCurrentDirectory()}",
+                    DirectoryPathsForPublisherCreationTests.OutputDirectoryForTestBuilds,
+                    "1"));
+        }
 
         //[Fact]
         //public void Rigth_SolutionDirectory()
