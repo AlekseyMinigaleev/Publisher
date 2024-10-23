@@ -63,5 +63,15 @@ namespace Publisher.Tests.Tests
             Assert.Null(exception);
             Assert.NotNull(publisher);
         }
+
+        [Fact]
+        public async Task Constructor_Should_Throw_IncorrectOutputDirectoryPathException_When_Invalid_Path_Provided()
+        {
+            Assert.Throws<IncorrectOutptuDirectoryPath>(
+                () => new Publisher(
+                DirectoryPathsForPublisherCreationTests.CurrentProjectDirectoryPath,
+                $"{DirectoryPathsForPublisherCreationTests.OutputDirectoryForTestBuilds}//text.txt",
+                "test"));
+        }
     }
 }
