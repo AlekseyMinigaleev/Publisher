@@ -51,12 +51,14 @@ namespace Publisher.Tests.Tests
         {
             Publisher? publisher = null;
 
+            var newDirectoryPath = $"{DirectoryPathsForPublisherCreationTests.OutputDirectoryForTestBuilds}\\foo\\bar\\bazz";
             var exception = Record.Exception(() =>
                 publisher = new Publisher(
                     DirectoryPathsForPublisherCreationTests.CurrentProjectDirectoryPath,
-                    $"{DirectoryPathsForPublisherCreationTests.OutputDirectoryForTestBuilds}\\foo\\bar\\bazz",
+                    newDirectoryPath,
                     "1"));
 
+            Assert.False(Directory.Exists(newDirectoryPath));
             Assert.Null(exception);
             Assert.NotNull(publisher);
         }
