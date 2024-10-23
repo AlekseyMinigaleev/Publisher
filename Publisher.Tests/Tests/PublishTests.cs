@@ -48,5 +48,24 @@
 
             Assert.True(Directory.Exists(publisher.BuildDirectory));
         }
+
+        [Fact]
+        public async Task PublishAsync_Should_Create_Two_Distinct_Builds_When_Called_Twice_With_Same_Output_Directory()
+        {
+            var publisher = new Publisher(
+                DirectoryPathsForPublisherCreationTests.CurrentProjectDirectoryPath,
+                DirectoryPathsForPublisherCreationTests.OutputDirectoryForTestBuilds,
+                "test");
+
+            await publisher.PublishAsync(CancellationToken.None);
+            var firstBuildDirectory = publisher.BuildDirectory;
+
+            await publisher.PublishAsync(CancellationToken.None);
+            var secondBuildDirectory = publisher.BuildDirectory;
+
+            Assert.NotEqual(firstBuildDirectory, secondBuildDirectory);
+            Assert.Equal("test", firstBuildDirectory);
+            Assert.Equal("test(1)", secondBuildDirectory);
+        }
     }
 }
