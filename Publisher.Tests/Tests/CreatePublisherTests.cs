@@ -14,19 +14,19 @@ namespace Publisher.Tests.Tests
                     "1"));
         }
 
-        //[Fact]
-        //public void Rigth_SolutionDirectory()
-        //{
-        //    var publisher = new Publisher(
-        //        DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
-        //        DirectoryPathConstatns.BUILDS,
-        //        "1");
+        [Fact]
+        public void Correctly_Set_SoulutionFilePath_With_Right_SolutionDirectory()
+        {
+            var publisher = new Publisher(
+                DirectoryPathsForPublisherCreationTests.CurrentProjectDirectoryPath,
+                DirectoryPathsForPublisherCreationTests.OutputDirectoryForTestBuilds,
+                "1");
 
-        //    var slnExtension = Path
-        //        .GetExtension(publisher.SolutionFilePath);
+            var slnExtension = Path
+                .GetExtension(publisher.SolutionFilePath);
 
-        //    Assert.Equal($"{FileExtensionConstants.SLN}", slnExtension);
-        //}
+            Assert.Equal($"{FileExtensionConstants.SLN}", slnExtension);
+        }
 
         [Fact]
         public void Exist_OutputDirectory()
