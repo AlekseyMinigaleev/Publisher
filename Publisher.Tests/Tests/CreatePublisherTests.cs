@@ -42,6 +42,7 @@ namespace Publisher.Tests.Tests
                     DirectoryPathsForPublisherCreationTests.OutputDirectoryForTestBuilds,
                     "1"));
 
+            Assert.True(Directory.Exists(DirectoryPathsForPublisherCreationTests.CurrentProjectDirectoryPath));
             Assert.Null(exception);
             Assert.NotNull(publisher);
         }
