@@ -32,9 +32,13 @@ namespace Publisher.Tests
             return outputDirectoryForTestBuildsPath;
         }
 
-        private static bool ContainsSolutionFile(DirectoryInfo directory) =>
-            directory
-                .GetFiles($"*{FileExtensionConstants.SLN}")
-                .Length > 0;
+        private static bool ContainsSolutionFile(DirectoryInfo directory)
+        {
+            var a = directory
+                .GetFiles($"*{FileExtensionConstants.SLN}");
+
+            return a.Length > 0;
+        }
+            
     }
 }

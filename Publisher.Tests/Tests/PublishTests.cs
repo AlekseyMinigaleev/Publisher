@@ -1,40 +1,43 @@
-﻿namespace Publisher.Tests.Tests
+﻿using System.Diagnostics;
+
+namespace Publisher.Tests.Tests
 {
     public class PublishTests
     {
-        //[Fact]
-        //public async Task Publish_AllProjects()
-        //{
-        //    var publisher = CreatePublisher();
+        [Fact]
+        public async Task Publish_AllProjects()
+        {
+            await CreateAllProjectsAsync();
+            //var publisher = CreatePublisher();
 
-        //    await publisher.PublishAsync(CancellationToken.None);
+            //await publisher.PublishAsync(CancellationToken.None);
 
-        //    var existProjectDirs = Directory
-        //        .GetDirectories(DirectoryPathConstatns.ALL_PROJECT_SOLUTION)
-        //        .Where(x => Directory
-        //            .GetFiles(
-        //                x,
-        //                $"*{FileExtensionConstants.CJPROJ}")
-        //            .Any());
+            //var existProjectDirs = Directory
+            //    .GetDirectories(DirectoryPathConstatns.ALL_PROJECT_SOLUTION)
+            //    .Where(x => Directory
+            //        .GetFiles(
+            //            x,
+            //            $"*{FileExtensionConstants.CJPROJ}")
+            //        .Any());
 
-        //    var winPublishDirsCount = Directory
-        //        .GetDirectories(
-        //            publisher.BuildDirectory,
-        //            $"*_{PlatformConstants.WINDOWS_X64}")
-        //        .Length;
+            //var winPublishDirsCount = Directory
+            //    .GetDirectories(
+            //        publisher.BuildDirectory,
+            //        $"*_{PlatformConstants.WINDOWS_X64}")
+            //    .Length;
 
-        //    var linuxPublisDirsCount = Directory
-        //        .GetDirectories(
-        //            publisher.BuildDirectory,
-        //            $"*_{PlatformConstants.LINUX_X64}")
-        //        .Length;
+            //var linuxPublisDirsCount = Directory
+            //    .GetDirectories(
+            //        publisher.BuildDirectory,
+            //        $"*_{PlatformConstants.LINUX_X64}")
+            //    .Length;
 
-        //    var winExistProjectDirsCount = existProjectDirs.Count();
-        //    var linuxExistProjectDirsCount = existProjectDirs.Count();
+            //var winExistProjectDirsCount = existProjectDirs.Count();
+            //var linuxExistProjectDirsCount = existProjectDirs.Count();
 
-        //    Assert.Equal(winExistProjectDirsCount, winPublishDirsCount);
-        //    Assert.Equal(linuxExistProjectDirsCount, linuxPublisDirsCount);
-        //}
+            //Assert.Equal(winExistProjectDirsCount, winPublishDirsCount);
+            //Assert.Equal(linuxExistProjectDirsCount, linuxPublisDirsCount);
+        }
 
         [Fact]
         public async Task Create_Build_Folder()
@@ -66,6 +69,74 @@
             Assert.NotEqual(firstBuildDirectory, secondBuildDirectory);
             Assert.Equal("test", firstBuildDirectory);
             Assert.Equal("test(1)", secondBuildDirectory);
+        }
+
+        private static async Task CreateAllProjectsAsync()
+        {
+            var solutionName = "Test";
+            var directory = new DirectoryInfo(DirectoryPathsForPublisherCreationTests.OutputDirectoryForTestBuilds);
+
+            var a = directory.Parent?.FullName
+                ?? throw new InvalidOperationException();
+
+            var solutionPath = Path.Combine(a, solutionName);
+
+            if (!Directory.Exists(solutionPath))
+                Directory.CreateDirectory(solutionPath);
+
+            await RunDotnetCommandAsync($"new sln -n {solutionName} -o {solutionPath} --force");
+
+            var projectTypes = new[]
+            {
+                "console",
+                "webapp",
+                "mvc",
+                "blazorserver",
+                "blazorwasm",
+                "classlib",
+                "wpf",
+                "winforms",
+                "worker",
+                "webapi",
+                "xunit"
+            };
+
+            foreach (var projectType in projectTypes)
+            {
+                var projectName = $"MyProject_{projectType}";
+                var projectPath = Path.Combine(solutionPath, projectName);
+
+                var solutionFullName = $"{Path.Combine(solutionPath, solutionName)}{FileExtensionConstants.SLN}";
+                var projectFullName = $"{Path.Combine(projectPath, projectName)}{FileExtensionConstants.CJPROJ}";
+
+                await RunDotnetCommandAsync($"new {projectType} -n {projectName} -o {projectPath} --force");
+
+                await RunDotnetCommandAsync($"sln {solutionFullName} add {projectFullName}");
+            }
+        }
+
+        private static async Task RunDotnetCommandAsync(string arguments)
+        {
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = "dotnet",
+                Arguments = arguments,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using var process = new Process { StartInfo = startInfo };
+            process.Start();
+
+            string output = await process.StandardOutput.ReadToEndAsync();
+            string error = await process.StandardError.ReadToEndAsync();
+
+            process.WaitForExit();
+
+            if (process.ExitCode != 0)
+                throw new Exception($"Command failed: {error}");
         }
     }
 }
