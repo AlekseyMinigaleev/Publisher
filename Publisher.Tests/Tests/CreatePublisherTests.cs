@@ -46,19 +46,19 @@ namespace Publisher.Tests.Tests
             Assert.NotNull(publisher);
         }
 
-        //[Fact]
-        //public void Not_Exist_OutputDirectory()
-        //{
-        //    Publisher? publisher = null;
+        [Fact]
+        public void Not_Exist_OutputDirectory()
+        {
+            Publisher? publisher = null;
 
-        //    var exception = Record.Exception(() =>
-        //        publisher = new Publisher(
-        //            DirectoryPathConstatns.ALL_PROJECT_SOLUTION,
-        //            $"{DirectoryPathConstatns.BASE_PATH}foo\\bar\\bazz",
-        //            "1"));
+            var exception = Record.Exception(() =>
+                publisher = new Publisher(
+                    DirectoryPathsForPublisherCreationTests.CurrentProjectDirectoryPath,
+                    $"{DirectoryPathsForPublisherCreationTests.OutputDirectoryForTestBuilds}\\foo\\bar\\bazz",
+                    "1"));
 
-        //    Assert.Null(exception);
-        //    Assert.NotNull(publisher);
-        //}
+            Assert.Null(exception);
+            Assert.NotNull(publisher);
+        }
     }
 }
