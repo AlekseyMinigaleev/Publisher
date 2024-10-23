@@ -65,7 +65,7 @@ namespace Publisher.Tests.Tests
         }
 
         [Fact]
-        public async Task Constructor_Should_Throw_IncorrectOutputDirectoryPathException_When_Invalid_Path_Provided()
+        public void Constructor_Should_Throw_IncorrectOutputDirectoryPathException_When_Invalid_Path_Provided()
         {
             Assert.Throws<IncorrectOutptuDirectoryPath>(
                 () => new Publisher(
